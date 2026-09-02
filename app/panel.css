@@ -1,0 +1,244 @@
+/* Müşteri paneli ve yönetim paneli ortak stilleri.
+   Kendi tasarım sisteminiz varsa bu dosyayı değiştirin; mantık dosyalarına
+   dokunmanız gerekmez. */
+
+.iy {
+  --ink: #101828;
+  --ink-2: #475467;
+  --muted: #667085;
+  --line: #e4e7ec;
+  --line-2: #f2f4f7;
+  --zemin: #f7f8fa;
+  --kart: #ffffff;
+  --marka: #1a56db;
+  --marka-koyu: #1442ad;
+  --ok: #067647;
+  --ok-zemin: #ecfdf3;
+  --bekle: #b54708;
+  --bekle-zemin: #fffaeb;
+  --hata: #b42318;
+  --hata-zemin: #fef3f2;
+
+  /* ---------- arka plan görseli ----------
+     Kendi görselinizi kullanmak için: dosyayı public/ klasörüne koyun ve
+     aşağıdaki adresi değiştirin, örn. url("/arkaplan.jpg").
+     Görseli kaldırmak için:  --arkaplan: none;
+     Görsel çok baskınsa --perde'deki .34/.58 sayılarını büyütün (1'e
+     yaklaştıkça görsel soluklaşır).                                        */
+  --arkaplan: url("/arkaplan-panel.svg");
+  --perde: linear-gradient(rgba(250, 251, 253, .34), rgba(250, 251, 253, .58));
+
+  min-height: 100vh;
+  background-color: var(--zemin);
+  background-image: var(--perde), var(--arkaplan);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  color: var(--ink);
+  font: 15px/1.55 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+/* Yönetim paneli farklı bir görsel kullanır: personel bir bakışta hangi
+   panelde olduğunu anlasın. */
+.iy.yonetim { --arkaplan: url("/arkaplan-yonetim.svg"); }
+
+.iy * { box-sizing: border-box; }
+
+/* ---------- yerleşim ---------- */
+.iy-ust {
+  background: rgba(255, 255, 255, .82);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--line);
+  padding: 0 20px;
+}
+.iy-ust-ic {
+  max-width: 1080px; margin: 0 auto;
+  display: flex; align-items: center; gap: 22px;
+  height: 58px;
+}
+.iy-logo { font-weight: 700; font-size: 16px; letter-spacing: -.01em; }
+.iy-menu { display: flex; gap: 4px; margin-left: auto; flex-wrap: wrap; }
+.iy-menu a {
+  padding: 7px 12px; border-radius: 7px; text-decoration: none;
+  color: var(--ink-2); font-size: 14px; font-weight: 500;
+}
+.iy-menu a:hover { background: var(--line-2); color: var(--ink); }
+.iy-menu a.etkin { background: var(--marka); color: #fff; }
+
+.iy-govde { max-width: 1080px; margin: 0 auto; padding: 28px 20px 72px; }
+.iy-dar { max-width: 620px; }
+
+h1.iy-baslik { font-size: 22px; margin: 0 0 4px; letter-spacing: -.015em; }
+p.iy-alt { color: var(--muted); margin: 0 0 24px; font-size: 14.5px; }
+
+/* ---------- kart ---------- */
+.iy-kart {
+  background: var(--kart); border: 1px solid var(--line);
+  border-radius: 11px; padding: 20px;
+}
+.iy-kart + .iy-kart { margin-top: 16px; }
+.iy-kart h2 { font-size: 16px; margin: 0 0 14px; letter-spacing: -.01em; }
+
+.iy-izgara { display: grid; gap: 16px; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); }
+
+/* ---------- bakiye ---------- */
+.iy-bakiye { display: grid; gap: 12px; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); }
+.iy-bakiye div { padding: 12px 14px; background: var(--line-2); border-radius: 9px; }
+.iy-bakiye dt { font-size: 12.5px; color: var(--muted); margin: 0 0 3px; }
+.iy-bakiye dd {
+  margin: 0; font-size: 19px; font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+.iy-bakiye .vurgu dd { color: var(--ok); }
+
+/* ---------- form ---------- */
+.iy label { display: block; margin-bottom: 15px; }
+.iy label > span {
+  display: block; font-size: 13px; font-weight: 600;
+  margin-bottom: 6px; color: #344054;
+}
+/* Tüm metin girdileri — yeni bir tür eklendiğinde biçimsiz kalmasın diye
+   dışlama yoluyla seçiyoruz (checkbox ve radio hariç hepsi). */
+.iy input:not([type=checkbox]):not([type=radio]),
+.iy select, .iy textarea {
+  width: 100%; padding: 9px 12px; border: 1px solid var(--line);
+  border-radius: 8px; font-size: 15px; background: #fff; color: var(--ink);
+  font-family: inherit;
+}
+.iy textarea { min-height: 74px; resize: vertical; }
+.iy input:focus, .iy select:focus, .iy textarea:focus {
+  outline: none; border-color: var(--marka);
+  box-shadow: 0 0 0 3px rgba(26,86,219,.12);
+}
+.iy-ipucu { font-size: 12.5px; color: var(--muted); margin-top: 5px; }
+
+.iy-btn {
+  padding: 10px 16px; border: 0; border-radius: 8px; background: var(--marka);
+  color: #fff; font-size: 14.5px; font-weight: 600; cursor: pointer;
+  font-family: inherit;
+}
+.iy-btn:hover:not(:disabled) { background: var(--marka-koyu); }
+.iy-btn:disabled { opacity: .5; cursor: not-allowed; }
+.iy-btn.tam { width: 100%; }
+.iy-btn.sade {
+  background: #fff; color: var(--ink-2); border: 1px solid var(--line);
+}
+.iy-btn.sade:hover:not(:disabled) { background: var(--line-2); }
+.iy-btn.onay { background: var(--ok); }
+.iy-btn.red { background: var(--hata); }
+.iy-btn.kucuk { padding: 6px 11px; font-size: 13px; }
+
+/* ---------- mesaj ---------- */
+.iy-mesaj { border-radius: 8px; padding: 11px 14px; margin-bottom: 16px; font-size: 14px; }
+.iy-mesaj.ok { background: var(--ok-zemin); color: var(--ok); border: 1px solid #abefc6; }
+.iy-mesaj.hata { background: var(--hata-zemin); color: var(--hata); border: 1px solid #fecdca; }
+.iy-mesaj.bilgi { background: var(--bekle-zemin); color: var(--bekle); border: 1px solid #fedf89; }
+
+/* ---------- rozet ---------- */
+.iy-rozet {
+  display: inline-block; padding: 3px 9px; border-radius: 20px;
+  font-size: 12px; font-weight: 600; white-space: nowrap;
+}
+.iy-rozet.beklemede { background: var(--bekle-zemin); color: var(--bekle); }
+.iy-rozet.onaylandi { background: var(--ok-zemin); color: var(--ok); }
+.iy-rozet.reddedildi { background: var(--hata-zemin); color: var(--hata); }
+.iy-rozet.iptal { background: var(--line-2); color: var(--muted); }
+.iy-rozet.sayi { background: var(--hata); color: #fff; margin-left: 5px; }
+
+/* ---------- tablo ---------- */
+.iy-kaydir { overflow-x: auto; border: 1px solid var(--line); border-radius: 11px; background: var(--kart); }
+.iy table { width: 100%; border-collapse: collapse; font-size: 14px; }
+.iy th, .iy td { padding: 11px 14px; text-align: left; border-bottom: 1px solid var(--line-2); vertical-align: top; }
+.iy tbody tr:last-child td { border-bottom: 0; }
+.iy th {
+  font-size: 11.5px; text-transform: uppercase; letter-spacing: .05em;
+  color: var(--muted); background: var(--zemin); white-space: nowrap; font-weight: 600;
+}
+.iy td.sayi { font-variant-numeric: tabular-nums; font-weight: 600; white-space: nowrap; }
+.iy .kucuk-yazi { font-size: 12.5px; color: var(--muted); }
+
+.iy-bos { padding: 40px 20px; text-align: center; color: var(--muted); font-size: 14.5px; }
+
+/* ---------- yöntem kartı ---------- */
+.iy-yontem {
+  border: 1px solid var(--line); border-radius: 10px; padding: 14px;
+  cursor: pointer; display: block; margin-bottom: 10px; background: #fff;
+}
+.iy-yontem:has(input:checked) { border-color: var(--marka); box-shadow: 0 0 0 3px rgba(26,86,219,.1); }
+.iy-yontem input { margin-right: 8px; }
+.iy-yontem-ad { font-weight: 600; }
+.iy-yontem-detay {
+  margin-top: 8px; font-size: 13px; color: var(--ink-2);
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  word-break: break-all; line-height: 1.7;
+}
+
+@media (max-width: 640px) {
+  .iy-ust-ic { height: auto; padding: 12px 0; flex-wrap: wrap; gap: 12px; }
+  .iy-menu { margin-left: 0; width: 100%; }
+  /* Sabit arka plan bazı telefonlarda kaydırmayı takılmalı yapıyor. */
+  .iy { background-attachment: scroll; }
+}
+
+/* ---------------- kayıt sonucu penceresi ---------------- */
+
+.iy-modal-zemin {
+  position: fixed; inset: 0; z-index: 1000;
+  background: rgba(16, 26, 45, .55);
+  display: flex; align-items: center; justify-content: center; padding: 20px;
+}
+.iy-modal {
+  background: var(--kart); border-radius: 14px; padding: 26px 24px 22px;
+  width: 100%; max-width: 430px; max-height: calc(100vh - 40px); overflow-y: auto;
+  box-shadow: 0 20px 50px rgba(16, 26, 45, .28);
+}
+.iy-modal-ikon {
+  width: 42px; height: 42px; border-radius: 50%;
+  background: var(--ok-zemin); color: var(--ok);
+  display: grid; place-items: center; font-size: 21px; font-weight: 700;
+  margin-bottom: 13px;
+}
+.iy-modal h2 { margin: 0 0 4px; font-size: 19px; }
+.iy-modal-alt { margin: 0 0 18px; color: var(--muted); font-size: 14px; }
+.iy-modal-alt strong { color: var(--ink); font-weight: 600; }
+
+.iy-ozet { margin: 0; }
+.iy-ozet > div {
+  display: flex; justify-content: space-between; gap: 12px;
+  padding: 8px 0; border-top: 1px solid var(--line);
+}
+.iy-ozet > div:first-child { border-top: 0; }
+.iy-ozet dt { color: var(--muted); margin: 0; }
+.iy-ozet dd {
+  margin: 0; font-weight: 600;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+
+.iy-kopyala {
+  border: 0; background: none; padding: 0; cursor: pointer; font: inherit;
+  font-weight: 600; font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  color: inherit; display: inline-flex; align-items: baseline; gap: 8px;
+}
+.iy-kopyala span {
+  font-family: inherit; font-size: 11px; font-weight: 500;
+  color: var(--marka); opacity: 0; transition: opacity .15s;
+}
+.iy-kopyala:hover span, .iy-kopyala:focus-visible span { opacity: 1; }
+.iy-kopyala.vurgulu { font-size: 15px; }
+
+.iy-uyari {
+  background: var(--bekle-zemin); border: 1px solid #fedf89; color: var(--bekle);
+  border-radius: 8px; padding: 12px 14px; margin-top: 16px; font-size: 13px;
+}
+.iy-uyari p { margin: 8px 0 0; }
+.iy-uyari-satir {
+  display: flex; justify-content: space-between; align-items: baseline;
+  gap: 12px; flex-wrap: wrap;
+}
+
+.iy-modal-butonlar { margin-top: 20px; display: grid; gap: 9px; }
+.iy-modal-butonlar a.iy-btn {
+  display: block; text-align: center; text-decoration: none; line-height: 1.4;
+}

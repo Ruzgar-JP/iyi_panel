@@ -1,0 +1,74 @@
+# İyi Yatırım Paneli — systemd servis tanımı
+#
+# Kurulum:
+#   cp /opt/iyipanel/kurulum/iyipanel.service /etc/systemd/system/
+#   systemctl daemon-reload
+#   systemctl enable --now iyipanel
+#
+# Günlükler:  journalctl -u iyipanel -f
+
+[Unit]
+Description=Iyi Yatirim Musteri Paneli
+Documentation=file:/opt/iyipanel/KURULUM.md
+After=network.target postgresql.service
+Wants=postgresql.service
+
+[Service]
+Type=simple
+User=iyipanel
+Group=iyipanel
+WorkingDirectory=/opt/iyipanel
+
+Environment=NODE_ENV=production
+# npm üzerinden değil, doğrudan next çalıştırılıyor: npm ara süreç açar ve
+# hata durumunda ev klasörüne günlük yazmaya çalışır — aşağıdaki
+# ProtectSystem=strict ile çakışır.
+ExecStart=/opt/iyipanel/node_modules/.bin/next start -p 3100
+
+# Çökerse kendiliğinden kalksın
+Restart=always
+RestartSec=5
+
+# ---------------------------------------------------------------- güvenlik
+# Uygulama bir açık verirse zararı sınırlansın diye çekirdek düzeyinde
+# kısıtlar. Panelin ihtiyacı olmayan her yetki kapatıldı.
+
+# Root'a yükselme yolu kapalı (setuid ikili dosyalar iş görmez)
+NoNewPrivileges=true
+
+# /home, /root ve /run/user görünmez
+ProtectHome=true
+
+# Sistem dosyaları salt okunur; uygulama yalnızca derleme çıktısına yazabilir.
+# Baştaki "-" işareti: klasör yoksa servis yine de açılır.
+ProtectSystem=strict
+ReadWritePaths=-/opt/iyipanel/.next
+
+# Kendine ait /tmp — başka süreçlerin geçici dosyalarını göremez
+PrivateTmp=true
+
+# Çekirdek ayarlarına ve günlüklerine erişim yok
+ProtectKernelTunables=true
+ProtectKernelModules=true
+ProtectKernelLogs=true
+ProtectControlGroups=true
+ProtectClock=true
+ProtectHostname=true
+
+# Yalnızca IPv4/IPv6 soketleri — ham soket veya egzotik protokol yok
+RestrictAddressFamilies=AF_INET AF_INET6 AF_UNIX
+RestrictNamespaces=true
+RestrictRealtime=true
+RestrictSUIDSGID=true
+LockPersonality=true
+
+# Bellek hem yazılabilir hem çalıştırılabilir olamaz
+MemoryDenyWriteExecute=false
+# ^ Node'un JIT derleyicisi buna ihtiyaç duyar; true yapılırsa uygulama açılmaz.
+
+SystemCallArchitectures=native
+SystemCallFilter=@system-service
+SystemCallErrorNumber=EPERM
+
+[Install]
+WantedBy=multi-user.target

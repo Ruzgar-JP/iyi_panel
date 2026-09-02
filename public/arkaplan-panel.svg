@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 1000" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="zemin" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#eff5fd"/>
+      <stop offset="0.55" stop-color="#e2ecfa"/>
+      <stop offset="1" stop-color="#d4e2f6"/>
+    </linearGradient>
+
+    <radialGradient id="bloomA" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#1a56db" stop-opacity="0.30"/>
+      <stop offset="1" stop-color="#1a56db" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="bloomB" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#0ea5a5" stop-opacity="0.22"/>
+      <stop offset="1" stop-color="#0ea5a5" stop-opacity="0"/>
+    </radialGradient>
+
+    <linearGradient id="alan" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#1a56db" stop-opacity="0.22"/>
+      <stop offset="1" stop-color="#1a56db" stop-opacity="0"/>
+    </linearGradient>
+    <linearGradient id="alan2" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#0f766e" stop-opacity="0.16"/>
+      <stop offset="1" stop-color="#0f766e" stop-opacity="0"/>
+    </linearGradient>
+
+    <pattern id="nokta" width="36" height="36" patternUnits="userSpaceOnUse">
+      <circle cx="2" cy="2" r="1.5" fill="#1a56db" opacity="0.16"/>
+    </pattern>
+  </defs>
+
+  <rect width="1600" height="1000" fill="url(#zemin)"/>
+  <rect width="1600" height="1000" fill="url(#nokta)"/>
+
+  <circle cx="1290" cy="120" r="560" fill="url(#bloomA)"/>
+  <circle cx="130" cy="880" r="520" fill="url(#bloomB)"/>
+
+  <path d="M0 790 C 170 735 250 845 410 790 C 570 735 650 600 810 636 C 970 672 1060 505 1220 466 C 1380 427 1490 336 1600 288 L1600 1000 L0 1000 Z" fill="url(#alan2)"/>
+  <path d="M0 790 C 170 735 250 845 410 790 C 570 735 650 600 810 636 C 970 672 1060 505 1220 466 C 1380 427 1490 336 1600 288"
+        fill="none" stroke="#0f766e" stroke-opacity="0.30" stroke-width="2"/>
+
+  <path d="M0 880 C 200 856 300 700 470 706 C 640 712 700 830 880 796 C 1060 762 1160 610 1330 590 C 1450 576 1520 540 1600 512 L1600 1000 L0 1000 Z" fill="url(#alan)"/>
+  <path d="M0 880 C 200 856 300 700 470 706 C 640 712 700 830 880 796 C 1060 762 1160 610 1330 590 C 1450 576 1520 540 1600 512"
+        fill="none" stroke="#1a56db" stroke-opacity="0.35" stroke-width="2.5"/>
+</svg>
