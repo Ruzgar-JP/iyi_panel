@@ -1,5 +1,6 @@
 import "server-only";
 import { sql } from "./db";
+import { odemeDetaylariniDuzelt } from "./odeme-detay";
 
 /**
  * Ödeme yöntemleri — banka hesapları ve kripto cüzdanları.
@@ -34,28 +35,34 @@ export type OdemeYontemi = {
   sira: number;
 };
 
+function yontemleriDuzelt(yontemler: OdemeYontemi[]): OdemeYontemi[] {
+  return yontemler.map((y) => ({ ...y, detaylar: odemeDetaylariniDuzelt(y.detaylar) }));
+}
+
 /** Müşteriye gösterilecek yöntemler. */
-export function acikYontemler(amac: "yatirim" | "cekim") {
-  return sql<OdemeYontemi[]>`
+export async function acikYontemler(amac: "yatirim" | "cekim") {
+  const yontemler = await sql<OdemeYontemi[]>`
     SELECT * FROM odeme_yontemleri
      WHERE aktif = true
        ${amac === "yatirim" ? sql`AND yatirima_acik = true` : sql`AND cekime_acik = true`}
      ORDER BY sira, ad
   `;
+  return yontemleriDuzelt(yontemler);
 }
 
 /** Yönetici panelinde hepsi (pasifler dahil). */
-export function tumYontemler() {
-  return sql<OdemeYontemi[]>`
+export async function tumYontemler() {
+  const yontemler = await sql<OdemeYontemi[]>`
     SELECT * FROM odeme_yontemleri ORDER BY aktif DESC, sira, ad
   `;
+  return yontemleriDuzelt(yontemler);
 }
 
 export async function yontemGetir(id: number): Promise<OdemeYontemi | null> {
   const s = await sql<OdemeYontemi[]>`
     SELECT * FROM odeme_yontemleri WHERE id = ${id} LIMIT 1
   `;
-  return s[0] ?? null;
+  return s[0] ? yontemleriDuzelt(s)[0] : null;
 }
 
 export async function yontemEkle(y: {
@@ -72,7 +79,7 @@ export async function yontemEkle(y: {
     INSERT INTO odeme_yontemleri
       (tip, ad, para_birimi, detaylar, aciklama, yatirima_acik, cekime_acik, sira)
     VALUES (${y.tip}, ${y.ad}, ${y.paraBirimi},
-            ${JSON.stringify(y.detaylar)}::jsonb, ${y.aciklama ?? null},
+            ${sql.json(y.detaylar)}, ${y.aciklama ?? null},
             ${y.yatirimaAcik}, ${y.cekimeAcik}, ${y.sira ?? 0})
     RETURNING id
   `;
@@ -96,7 +103,7 @@ export async function yontemGuncelle(
     UPDATE odeme_yontemleri
        SET ad = ${y.ad},
            para_birimi = ${y.paraBirimi},
-           detaylar = ${JSON.stringify(y.detaylar)}::jsonb,
+           detaylar = ${sql.json(y.detaylar)},
            aciklama = ${y.aciklama ?? null},
            yatirima_acik = ${y.yatirimaAcik},
            cekime_acik = ${y.cekimeAcik},
