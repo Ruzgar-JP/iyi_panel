@@ -58,7 +58,7 @@ export async function musteriOturumAc(
        hesaplar, bakiye_zamani, ip, bitis)
     VALUES (${jetonOzeti(jeton)}, ${m.id}, ${m.st_customer_id ?? 0}, ${m.eposta},
             ${adSoyad}, NULL,
-            ${JSON.stringify(hesaplar)}::jsonb, now(), ${ip}, ${bitis})
+            ${sql.json(hesaplar)}, now(), ${ip}, ${bitis})
   `;
 
   (await cookies()).set(OTURUM.musteriCerez, jeton, { ...CEREZ_AYARI, expires: bitis });
@@ -110,7 +110,7 @@ export async function oturumBakiyeGuncelle(
 ): Promise<void> {
   await sql`
     UPDATE musteri_oturumlari
-       SET hesaplar = ${JSON.stringify(hesaplar)}::jsonb,
+       SET hesaplar = ${sql.json(hesaplar)},
            bakiye_zamani = now()
      WHERE id = ${oturumId}
   `;

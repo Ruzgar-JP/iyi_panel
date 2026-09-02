@@ -53,6 +53,7 @@ export type PgliteSql = {
   ): Promise<T> & Parca;
   hazir: () => Promise<void>;
   kapat: () => Promise<void>;
+  json: (deger: unknown) => string;
 };
 
 export function pgliteBaglantisi(klasor: string): PgliteSql {
@@ -100,6 +101,9 @@ export function pgliteBaglantisi(klasor: string): PgliteSql {
   sql.kapat = async () => {
     if (dbSozu) await (await dbSozu).close();
   };
+  // PGlite parametreleri düz metin taşır; PostgreSQL tarafında ::jsonb ile
+  // çözülecek gerçek JSON belgesini kendimiz üretiriz.
+  sql.json = (deger: unknown) => JSON.stringify(deger);
 
   return sql;
 }

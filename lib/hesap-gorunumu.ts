@@ -27,7 +27,10 @@ function sayiMi(deger: unknown): deger is number {
  */
 export function hesapGorunumleriniDiziyeCevir(veri: unknown): HesapGorunumu[] {
   let deger = veri;
-  if (typeof deger === "string") {
+  // postgres istemcisi önceki sürümde JSONB'yi metin olarak, o metni de
+  // JSON'a çevirerek döndürmüş olabilir. En fazla iki katmanı açmak yeterli;
+  // sınırsız çözme, kötü niyetli veya bozuk veride kaynak tüketebilir.
+  for (let katman = 0; katman < 2 && typeof deger === "string"; katman += 1) {
     try {
       deger = JSON.parse(deger) as unknown;
     } catch {

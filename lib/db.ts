@@ -25,6 +25,8 @@ type SqlIslevi = {
     metinler: TemplateStringsArray,
     ...degerler: unknown[]
   ): Promise<T>;
+  /** JSONB parametresini sürücüye uygun biçimde bağlar. */
+  json: (deger: unknown) => unknown;
 };
 
 declare global {

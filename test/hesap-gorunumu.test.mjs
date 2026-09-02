@@ -21,3 +21,8 @@ test("bozuk veya dizi olmayan oturum verisi paneli çökertmez", () => {
   assert.deepEqual(hesapGorunumleriniDiziyeCevir({ login: 123456 }), []);
   assert.deepEqual(hesapGorunumleriniDiziyeCevir('{"login":123456}'), []);
 });
+
+test("önceki sürümün çift JSON kodlanmış oturum listesini açar", () => {
+  const hesaplar = [{ login: 123456, grup: "standard", paraBirimi: "USD", kaldirac: 100, bakiye: null }];
+  assert.deepEqual(hesapGorunumleriniDiziyeCevir(JSON.stringify(JSON.stringify(hesaplar))), hesaplar);
+});
