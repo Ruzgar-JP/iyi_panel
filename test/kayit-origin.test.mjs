@@ -55,5 +55,11 @@ test("kayıt işlemi seçili ScaleTrade grubunu doğrudan açmayı dener", () =>
 
 test("hız sınırı captcha doğrulamasından sonra uygulanır", () => {
   const kaynak = readFileSync(new URL("../app/api/kayit/route.ts", import.meta.url), "utf8");
-  assert.ok(kaynak.indexOf("captchaGecerliMi(g.captchaJetonu") < kaynak.lastIndexOf("cokDenendiMi"));
+  assert.ok(kaynak.indexOf("captchaDogrula(g.captchaJetonu") < kaynak.lastIndexOf("cokDenendiMi"));
+});
+
+test("captcha reddi gizli anahtarı ifşa etmeden tanı etiketi döndürür", () => {
+  const kaynak = readFileSync(new URL("../app/api/kayit/route.ts", import.meta.url), "utf8");
+  assert.match(kaynak, /CAPTCHA\/\$\{captcha\.etiket/);
+  assert.doesNotMatch(kaynak, /TURNSTILE_SECRET_KEY.*mesaj/);
 });

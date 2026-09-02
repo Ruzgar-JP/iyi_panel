@@ -8,7 +8,7 @@ import {
   stHataMesaji,
   STHata,
 } from "@/lib/scaletrade";
-import { captchaGecerliMi } from "@/lib/captcha";
+import { captchaDogrula } from "@/lib/captcha";
 import { kayitCorsBasliklari, kayitOriginineIzinVar } from "@/lib/kayit-origin";
 import { istemciIp, kayitYaz } from "@/lib/oturum";
 import { ST } from "@/lib/ayarlar";
@@ -105,8 +105,13 @@ export async function POST(req: Request) {
     return hata(req, "Geçersiz istek.", 400);
   }
 
-  if (!(await captchaGecerliMi(g.captchaJetonu as string | undefined, ip))) {
-    return hata(req, "Güvenlik doğrulaması başarısız. Sayfayı yenileyip tekrar deneyin.", 400);
+  const captcha = await captchaDogrula(g.captchaJetonu as string | undefined, ip);
+  if (!captcha.gecerli) {
+    const mesaj =
+      captcha.etiket === "JETON_SURESI_DOLDU"
+        ? "Güvenlik doğrulamasının süresi doldu. Kutuyu yeniden tamamlayıp tekrar deneyin."
+        : "Güvenlik doğrulaması başarısız. Sayfayı yenileyip tekrar deneyin.";
+    return hata(req, mesaj, 400, { etiket: `CAPTCHA/${captcha.etiket ?? "SERVIS_HATASI"}` });
   }
 
   // Hatalı/eskimiş captcha jetonları kullanıcının kayıt deneme kotasını
