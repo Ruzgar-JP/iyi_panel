@@ -29,6 +29,7 @@ try {
   const oturumlar = await sql`
     SELECT o.id, o.musteri_id, o.eposta, o.olusturma, o.son_gorulme,
            jsonb_typeof(o.hesaplar) AS hesap_bicimi,
+           left(o.hesaplar::text, 500) AS oturum_hesap_verisi,
            jsonb_array_length(CASE WHEN jsonb_typeof(o.hesaplar) = 'array' THEN o.hesaplar ELSE '[]'::jsonb END) AS oturum_hesap_sayisi
       FROM musteri_oturumlari o
      WHERE o.bitis > now()

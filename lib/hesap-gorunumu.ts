@@ -18,6 +18,13 @@ function sayiMi(deger: unknown): deger is number {
   return typeof deger === "number" && Number.isFinite(deger);
 }
 
+function hesapNo(deger: unknown): number | null {
+  if (sayiMi(deger)) return deger;
+  if (typeof deger !== "string" || !/^\d+$/.test(deger)) return null;
+  const sayi = Number(deger);
+  return Number.isSafeInteger(sayi) ? sayi : null;
+}
+
 /**
  * Oturum tablosundaki hesap görüntüsünü her zaman dizi biçimine getirir.
  *
@@ -43,10 +50,11 @@ export function hesapGorunumleriniDiziyeCevir(veri: unknown): HesapGorunumu[] {
     if (!nesneMu(kayit)) return [];
     const eskiHesap = nesneMu(kayit.hesap) ? kayit.hesap : null;
     const kaynak = eskiHesap ?? kayit;
-    if (!sayiMi(kaynak.login)) return [];
+    const login = hesapNo(kaynak.login);
+    if (login === null) return [];
 
     return [{
-      login: kaynak.login,
+      login,
       grup: typeof (kaynak.grup ?? kaynak.group) === "string"
         ? String(kaynak.grup ?? kaynak.group)
         : null,

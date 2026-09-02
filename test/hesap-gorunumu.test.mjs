@@ -8,6 +8,15 @@ test("geçerli oturum hesap listesini olduğu gibi kullanır", () => {
   assert.deepEqual(hesapGorunumleriniDiziyeCevir(hesaplar), hesaplar);
 });
 
+test("PostgreSQL JSONB içindeki sayısal metin login değerini kabul eder", () => {
+  assert.deepEqual(
+    hesapGorunumleriniDiziyeCevir([
+      { login: "100023", grup: "Main", paraBirimi: "USD", kaldirac: 100, bakiye: null },
+    ]),
+    [{ login: 100023, grup: "Main", paraBirimi: "USD", kaldirac: 100, bakiye: null }],
+  );
+});
+
 test("önceki sürümün hesap/bakiye yuvalı oturum biçimini dönüştürür", () => {
   assert.deepEqual(
     hesapGorunumleriniDiziyeCevir([
