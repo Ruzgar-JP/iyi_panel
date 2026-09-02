@@ -177,9 +177,26 @@ p.iy-alt { color: var(--muted); margin: 0 0 24px; font-size: 14.5px; }
 .iy-yontem-ad { font-weight: 600; }
 .iy-yontem-detay {
   margin-top: 8px; font-size: 13px; color: var(--ink-2);
-  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
-  word-break: break-all; line-height: 1.7;
+  line-height: 1.6;
 }
+.iy-yontem-detay-listesi { display: grid; gap: 8px; margin: 10px 0 0; }
+.iy-yontem-detay-satir {
+  display: grid; grid-template-columns: minmax(88px, .42fr) minmax(0, 1fr);
+  gap: 10px; align-items: start; padding: 9px 10px;
+  background: #f8fbfa; border: 1px solid #e1eee8; border-radius: 8px;
+}
+.iy-yontem-detay-satir dt { color: var(--muted); font-size: 12px; font-weight: 700; }
+.iy-yontem-detay-satir dd { margin: 0; min-width: 0; display: flex; align-items: center; gap: 8px; }
+.iy-yontem-deger {
+  min-width: 0; flex: 1; color: var(--ink); font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 12.5px; font-weight: 600; overflow-wrap: anywhere;
+}
+.iy-kopyala-buton {
+  flex: 0 0 auto; min-height: 34px; border: 1px solid #b9d8c9; border-radius: 7px;
+  background: #fff; color: #087746; padding: 6px 9px; font: inherit; font-size: 12px; font-weight: 700; cursor: pointer;
+}
+.iy-kopyala-buton:hover, .iy-kopyala-buton:focus-visible { background: #ecfdf3; outline: 2px solid var(--marka); outline-offset: 2px; }
+.sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
 
 @media (max-width: 640px) {
   .iy-ust-ic { height: auto; padding: 12px 0; flex-wrap: wrap; gap: 12px; }
@@ -188,6 +205,9 @@ p.iy-alt { color: var(--muted); margin: 0 0 24px; font-size: 14.5px; }
   .iy { background-attachment: scroll; }
   .iy-marka img { height: 38px; }
   .iy-govde { padding-left: 16px; padding-right: 16px; }
+  .iy-yontem-detay-satir { grid-template-columns: 1fr; gap: 4px; }
+  .iy-yontem-detay-satir dd { align-items: flex-start; flex-wrap: wrap; }
+  .iy-kopyala-buton { width: 100%; }
 }
 
 /* ---------- giriş ekranları: ana İyi Yatırım sitesiyle aynı sade kimlik ---------- */

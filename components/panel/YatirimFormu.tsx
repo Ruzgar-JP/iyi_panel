@@ -134,21 +134,29 @@ export default function YatirimFormu({
 
           {yontemId === y.id && (
             <div className="iy-yontem-detay">
-              {Object.entries(y.detaylar).map(([alan, deger]) =>
-                deger ? (
-                  <div key={alan}>
-                    {ALAN_ETIKET[alan] ?? alan}:{" "}
-                    <button
-                      type="button"
-                      className="iy-btn sade kucuk"
-                      style={{ fontFamily: "inherit" }}
-                      onClick={(ev) => { ev.preventDefault(); kopyala(deger, alan); }}
-                    >
-                      {deger} {kopyalandi === alan ? "✓" : "⧉"}
-                    </button>
-                  </div>
-                ) : null,
-              )}
+              <dl className="iy-yontem-detay-listesi">
+                {Object.entries(y.detaylar).map(([alan, deger]) =>
+                  deger ? (
+                    <div className="iy-yontem-detay-satir" key={alan}>
+                      <dt>{ALAN_ETIKET[alan] ?? alan}</dt>
+                      <dd>
+                        <span className="iy-yontem-deger">{deger}</span>
+                        <button
+                          type="button"
+                          className="iy-kopyala-buton"
+                          aria-label={`${ALAN_ETIKET[alan] ?? alan} bilgisini kopyala`}
+                          onClick={(ev) => { ev.preventDefault(); kopyala(deger, `${y.id}-${alan}`); }}
+                        >
+                          {kopyalandi === `${y.id}-${alan}` ? "Kopyalandı ✓" : "Kopyala"}
+                        </button>
+                      </dd>
+                    </div>
+                  ) : null,
+                )}
+              </dl>
+              <p className="sr-only" aria-live="polite" aria-atomic="true">
+                {kopyalandi ? "Bilgi panoya kopyalandı." : ""}
+              </p>
               {y.aciklama && (
                 <p className="kucuk-yazi" style={{ fontFamily: "inherit", marginTop: 8 }}>
                   {y.aciklama}
