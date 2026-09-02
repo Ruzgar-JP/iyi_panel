@@ -70,16 +70,6 @@ const nextConfig = {
         headers: guvenlikBasliklari,
       },
       {
-        // www.iyiyatirim.org üzerindeki hesap açma formu, aynı kayıt
-        // akışını bu uca gönderir. Route ayrıca Origin değerini denetler.
-        source: "/api/kayit",
-        headers: [
-          { key: "Access-Control-Allow-Origin", value: "https://www.iyiyatirim.org" },
-          { key: "Access-Control-Allow-Methods", value: "POST, OPTIONS" },
-          { key: "Access-Control-Allow-Headers", value: "Content-Type" },
-        ],
-      },
-      {
         // Panel ve yönetim sayfaları ara belleğe ALINMAZ. Ortak bilgisayarda
         // çıkış yapıldıktan sonra "geri" tuşuyla bakiye görülmesin.
         source: "/:yol(panel|yonetim)/:kalan*",

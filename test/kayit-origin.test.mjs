@@ -18,6 +18,17 @@ test("panelin kendi kayıt sayfası istek gönderebilir", () => {
   );
 });
 
+test("yerel web sitesi geliştirme sunucusu kayıt isteği gönderebilir", () => {
+  assert.equal(
+    kayitOriginineIzinVar("http://localhost:3000", "https://musteripanel.iyiyatirim.org"),
+    true,
+  );
+  assert.equal(
+    kayitCorsBasliklari("http://localhost:3000")["Access-Control-Allow-Origin"],
+    "http://localhost:3000",
+  );
+});
+
 test("başka bir alan adından kayıt isteği reddedilir", () => {
   assert.equal(
     kayitOriginineIzinVar("https://saldirgan.example", "https://panel.iyiyatirim.org"),

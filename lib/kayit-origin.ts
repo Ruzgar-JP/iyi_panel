@@ -1,11 +1,16 @@
 /** Dış web sitesinin kayıt isteği göndermesine izin verilen tek kaynak. */
 export const KAYIT_WEB_ORIGIN = "https://www.iyiyatirim.org";
+const YEREL_GELISTIRME_ORIGIN = "http://localhost:3000";
+
+function izinliOriginMi(origin: string | null): boolean {
+  return origin === KAYIT_WEB_ORIGIN || origin === YEREL_GELISTIRME_ORIGIN;
+}
 
 /** İzinli dış web sitesi için tüm (hata dâhil) yanıtların CORS başlıkları. */
 export function kayitCorsBasliklari(origin: string | null): Record<string, string> {
-  return origin === KAYIT_WEB_ORIGIN
+  return izinliOriginMi(origin)
     ? {
-        "Access-Control-Allow-Origin": KAYIT_WEB_ORIGIN,
+        "Access-Control-Allow-Origin": origin!,
         "Access-Control-Allow-Methods": "POST, OPTIONS",
         "Access-Control-Allow-Headers": "Content-Type",
         "Access-Control-Max-Age": "86400",
@@ -22,5 +27,5 @@ export function kayitOriginineIzinVar(
   origin: string | null,
   panelOrigin: string,
 ): boolean {
-  return origin === null || origin === panelOrigin || origin === KAYIT_WEB_ORIGIN;
+  return origin === null || origin === panelOrigin || izinliOriginMi(origin);
 }
