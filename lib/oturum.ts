@@ -4,7 +4,7 @@ import { cookies } from "next/headers";
 import { sql } from "./db";
 import { OTURUM } from "./ayarlar";
 import { jetonOzeti, jetonUret } from "./kripto";
-import type { Bakiye } from "./scaletrade";
+import { hesapGorunumleriniDiziyeCevir, type HesapGorunumu } from "./hesap-gorunumu";
 import type { Musteri } from "./musteri";
 
 /**
@@ -13,13 +13,7 @@ import type { Musteri } from "./musteri";
  * Hesap bilgisi artık ScaleTrade'in müşteri oturumundan değil, kendi
  * musteri_hesaplari tablomuzdan geliyor; bakiye yönetici token'ıyla okunuyor.
  */
-export type HesapGorunumu = {
-  login: number;
-  grup: string | null;
-  paraBirimi: string | null;
-  kaldirac: number | null;
-  bakiye: Bakiye | null;
-};
+export type { HesapGorunumu } from "./hesap-gorunumu";
 
 /**
  * Oturumlar veritabanında tutulur; tarayıcıya yalnızca opak bir jeton gider.
@@ -81,7 +75,7 @@ export async function musteriOturumu(): Promise<MusteriOturumu | null> {
       musteri_id: number;
       eposta: string;
       ad_soyad: string | null;
-      hesaplar: HesapGorunumu[] | null;
+      hesaplar: unknown;
       bakiye_zamani: Date | null;
     }[]
   >`
@@ -104,7 +98,7 @@ export async function musteriOturumu(): Promise<MusteriOturumu | null> {
     musteriId: Number(s.musteri_id),
     eposta: s.eposta,
     adSoyad: s.ad_soyad,
-    hesaplar: s.hesaplar ?? [],
+    hesaplar: hesapGorunumleriniDiziyeCevir(s.hesaplar),
     bakiyeZamani: s.bakiye_zamani,
   };
 }
