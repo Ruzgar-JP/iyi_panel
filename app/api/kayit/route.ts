@@ -98,10 +98,6 @@ export async function POST(req: Request) {
 
   const ip = istemciIp(req.headers);
 
-  if (cokDenendiMi(ip ?? "bilinmeyen")) {
-    return hata(req, "Çok fazla deneme yapıldı. Birkaç dakika sonra tekrar deneyin.", 429);
-  }
-
   let g: Record<string, unknown>;
   try {
     g = (await req.json()) as Record<string, unknown>;
@@ -111,6 +107,13 @@ export async function POST(req: Request) {
 
   if (!(await captchaGecerliMi(g.captchaJetonu as string | undefined, ip))) {
     return hata(req, "Güvenlik doğrulaması başarısız. Sayfayı yenileyip tekrar deneyin.", 400);
+  }
+
+  // Hatalı/eskimiş captcha jetonları kullanıcının kayıt deneme kotasını
+  // tüketmemeli. Bu nokta sonrasında her istek Cloudflare tarafından
+  // doğrulanmış olduğundan IP bazlı sınır hâlâ botlara karşı etkilidir.
+  if (cokDenendiMi(ip ?? "bilinmeyen")) {
+    return hata(req, "Çok fazla deneme yapıldı. Birkaç dakika sonra tekrar deneyin.", 429);
   }
 
   /* --- sunucu tarafı doğrulama --- */

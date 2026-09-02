@@ -52,3 +52,8 @@ test("kayıt işlemi seçili ScaleTrade grubunu doğrudan açmayı dener", () =>
   assert.doesNotMatch(kaynak, /grupKullanilabilirMi/);
   assert.match(kaynak, /hesapAc\(token, ST\.grup\)/);
 });
+
+test("hız sınırı captcha doğrulamasından sonra uygulanır", () => {
+  const kaynak = readFileSync(new URL("../app/api/kayit/route.ts", import.meta.url), "utf8");
+  assert.ok(kaynak.indexOf("captchaGecerliMi(g.captchaJetonu") < kaynak.lastIndexOf("cokDenendiMi"));
+});
