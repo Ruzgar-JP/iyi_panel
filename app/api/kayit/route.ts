@@ -1,9 +1,7 @@
 import { NextResponse } from "next/server";
 
 import {
-  acilabilirGruplar,
   girisYap,
-  grupKullanilabilirMi,
   hesapAc,
   islemSifresiDegistir,
   musteriKaydet,
@@ -11,7 +9,7 @@ import {
   STHata,
 } from "@/lib/scaletrade";
 import { captchaGecerliMi } from "@/lib/captcha";
-import { KAYIT_WEB_ORIGIN, kayitOriginineIzinVar } from "@/lib/kayit-origin";
+import { kayitCorsBasliklari, kayitOriginineIzinVar } from "@/lib/kayit-origin";
 import { istemciIp, kayitYaz } from "@/lib/oturum";
 import { ST } from "@/lib/ayarlar";
 import { sifreHatalari } from "@/lib/sifre";
@@ -72,44 +70,47 @@ function telefonNormalize(t: string): string {
   return s;
 }
 
-function hata(mesaj: string, durum: number, ek?: object) {
-  return NextResponse.json({ ok: false, mesaj, ...ek }, { status: durum });
+function yanit(req: Request, govde: object, durum = 200) {
+  return NextResponse.json(govde, {
+    status: durum,
+    headers: kayitCorsBasliklari(req.headers.get("origin")),
+  });
 }
 
-const CORS_BASLIKLARI = {
-  "Access-Control-Allow-Origin": KAYIT_WEB_ORIGIN,
-  "Access-Control-Allow-Methods": "POST, OPTIONS",
-  "Access-Control-Allow-Headers": "Content-Type",
-  "Access-Control-Max-Age": "86400",
-};
+function hata(req: Request, mesaj: string, durum: number, ek?: object) {
+  return yanit(req, { ok: false, mesaj, ...ek }, durum);
+}
 
 export function OPTIONS(req: Request) {
   if (!kayitOriginineIzinVar(req.headers.get("origin"), new URL(req.url).origin)) {
     return new NextResponse(null, { status: 403 });
   }
-  return new NextResponse(null, { status: 204, headers: CORS_BASLIKLARI });
+  return new NextResponse(null, {
+    status: 204,
+    headers: kayitCorsBasliklari(req.headers.get("origin")),
+  });
 }
 
 export async function POST(req: Request) {
   if (!kayitOriginineIzinVar(req.headers.get("origin"), new URL(req.url).origin)) {
-    return hata("Bu kaynaktan kayıt isteğine izin verilmiyor.", 403);
+    return hata(req, "Bu kaynaktan kayıt isteğine izin verilmiyor.", 403);
   }
 
   const ip = istemciIp(req.headers);
 
   if (cokDenendiMi(ip ?? "bilinmeyen")) {
-    return hata("Çok fazla deneme yapıldı. Birkaç dakika sonra tekrar deneyin.", 429);
+    return hata(req, "Çok fazla deneme yapıldı. Birkaç dakika sonra tekrar deneyin.", 429);
   }
 
   let g: Record<string, unknown>;
   try {
     g = (await req.json()) as Record<string, unknown>;
   } catch {
-    return hata("Geçersiz istek.", 400);
+    return hata(req, "Geçersiz istek.", 400);
   }
 
   if (!(await captchaGecerliMi(g.captchaJetonu as string | undefined, ip))) {
-    return hata("Güvenlik doğrulaması başarısız. Sayfayı yenileyip tekrar deneyin.", 400);
+    return hata(req, "Güvenlik doğrulaması başarısız. Sayfayı yenileyip tekrar deneyin.", 400);
   }
 
   /* --- sunucu tarafı doğrulama --- */
@@ -132,12 +133,12 @@ export async function POST(req: Request) {
     alanHatalari.push("Şifre kuralları: " + sifreEksikleri.join(", ") + ".");
 
   if (alanHatalari.length) {
-    return hata("Formda düzeltilmesi gereken alanlar var:", 400, { alanHatalari });
+    return hata(req, "Formda düzeltilmesi gereken alanlar var:", 400, { alanHatalari });
   }
 
   /* --- e-posta bizde zaten var mı --- */
   if (await epostayaGoreGetir(eposta)) {
-    return hata(
+    return hata(req,
       "Bu e-posta adresiyle daha önce kayıt oluşturulmuş. Giriş yapmayı deneyin.",
       409,
     );
@@ -182,15 +183,9 @@ export async function POST(req: Request) {
     const token = stOturum.__token;
     if (!token) throw new STHata("giris", "TOKEN_YOK", 200);
 
-    const gruplar = await acilabilirGruplar(token);
-    const uygunluk = grupKullanilabilirMi(gruplar, ST.grup);
-    if (!uygunluk.uygun) {
-      return NextResponse.json(
-        { ok: false, kod: uygunluk.kod, mesaj: kodMesaji(uygunluk.kod) },
-        { status: 409 },
-      );
-    }
-
+    // ScaleTrade'in grup listesi, bazı kurulumlarda hesabı açılabilir olsa
+    // dahi "public" kapalı döner. Eski web sitesiyle aynı davranış için
+    // kararı liste ön kontrolüne değil, gerçek hesap açma çağrısına bırakırız.
     const hesap = await hesapAc(token, ST.grup);
 
     /* --- işlem şifresini müşterinin seçtiğine çek --- */
@@ -230,7 +225,7 @@ export async function POST(req: Request) {
       ip,
     });
 
-    return NextResponse.json({
+    return yanit(req, {
       ok: true,
       eposta,
       hesap: {
@@ -245,18 +240,18 @@ export async function POST(req: Request) {
   } catch (e) {
     if (e instanceof STHata) {
       console.error("[kayit]", { adim: e.adim, kod: e.kod });
-      return NextResponse.json(
+      return yanit(req,
         {
           ok: false,
           kod: e.kod,
           etiket: `${e.adim.toUpperCase()}/${e.kod}`,
           mesaj: kodMesaji(e.kod),
         },
-        { status: e.kod === "DUPLICATE_RECORD" ? 409 : 502 },
+        e.kod === "DUPLICATE_RECORD" ? 409 : 502,
       );
     }
     console.error("[kayit] beklenmeyen", e);
-    return hata(stHataMesaji(e), 500);
+    return hata(req, stHataMesaji(e), 500);
   }
 }
 
