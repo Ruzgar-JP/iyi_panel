@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
+import MarkaLogo from "@/components/MarkaLogo";
 
 const BAGLANTILAR = [
   { yol: "/panel", etiket: "Özet" },
@@ -25,7 +26,7 @@ export default function PanelMenu({ adSoyad }: { adSoyad: string }) {
   return (
     <header className="iy-ust">
       <div className="iy-ust-ic">
-        <span className="iy-logo">İyi Yatırım</span>
+        <MarkaLogo href="/panel" />
 
         <nav className="iy-menu">
           {BAGLANTILAR.map((b) => (

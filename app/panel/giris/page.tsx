@@ -9,13 +9,14 @@ export default async function GirisSayfasi() {
   if (await musteriOturumu()) redirect("/panel");
 
   return (
-    <div className="iy-govde iy-dar" style={{ paddingTop: 64 }}>
-      <h1 className="iy-baslik">Müşteri Girişi</h1>
-      <p className="iy-alt">Hesabınıza erişmek için giriş yapın.</p>
-
-      <div className="iy-kart">
+    <main className="iy-giris">
+      <div className="iy-giris-kart">
+        <img className="iy-giris-logo" src="/iyi-yatirim-logo.png" alt="İyi Yatırım" />
+        <p className="iy-giris-etiket">MÜŞTERİ PANELİ</p>
+        <h1>Müşteri Girişi</h1>
+        <p>Hesabınıza güvenle erişmek için giriş yapın.</p>
         <GirisFormu />
       </div>
-    </div>
+    </main>
   );
 }

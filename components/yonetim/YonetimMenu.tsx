@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
+import MarkaLogo from "@/components/MarkaLogo";
 
 export default function YonetimMenu({
   adSoyad,
@@ -43,7 +44,7 @@ export default function YonetimMenu({
   return (
     <header className="iy-ust">
       <div className="iy-ust-ic">
-        <span className="iy-logo">İyi Yatırım · Yönetim</span>
+        <MarkaLogo href="/yonetim" yonetim />
 
         <nav className="iy-menu">
           {baglantilar.map((b) => (

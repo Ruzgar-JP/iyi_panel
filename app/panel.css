@@ -10,9 +10,9 @@
   --line-2: #f2f4f7;
   --zemin: #f7f8fa;
   --kart: #ffffff;
-  --marka: #1a56db;
-  --marka-koyu: #1442ad;
-  --ok: #067647;
+  --marka: #00a95c;
+  --marka-koyu: #00884a;
+  --ok: #009d58;
   --ok-zemin: #ecfdf3;
   --bekle: #b54708;
   --bekle-zemin: #fffaeb;
@@ -41,24 +41,29 @@
 
 /* Yönetim paneli farklı bir görsel kullanır: personel bir bakışta hangi
    panelde olduğunu anlasın. */
-.iy.yonetim { --arkaplan: url("/arkaplan-yonetim.svg"); }
+.iy.yonetim { --arkaplan: url("/arkaplan-yonetim.svg"); --marka: #1267c7; --marka-koyu: #0b4e9b; }
 
 .iy * { box-sizing: border-box; }
 
 /* ---------- yerleşim ---------- */
 .iy-ust {
-  background: rgba(255, 255, 255, .82);
+  background: rgba(255, 255, 255, .94);
   -webkit-backdrop-filter: blur(10px);
   backdrop-filter: blur(10px);
   border-bottom: 1px solid var(--line);
   padding: 0 20px;
 }
 .iy-ust-ic {
-  max-width: 1080px; margin: 0 auto;
+  max-width: 1240px; margin: 0 auto;
   display: flex; align-items: center; gap: 22px;
-  height: 58px;
+  height: 72px;
 }
-.iy-logo { font-weight: 700; font-size: 16px; letter-spacing: -.01em; }
+.iy-marka { display: inline-flex; align-items: center; gap: 9px; text-decoration: none; flex: 0 0 auto; }
+.iy-marka img { width: auto; height: 43px; display: block; object-fit: contain; }
+.iy-marka span {
+  padding-left: 9px; border-left: 1px solid var(--line); color: var(--ink-2);
+  font-size: 13px; font-weight: 700; letter-spacing: .04em; text-transform: uppercase;
+}
 .iy-menu { display: flex; gap: 4px; margin-left: auto; flex-wrap: wrap; }
 .iy-menu a {
   padding: 7px 12px; border-radius: 7px; text-decoration: none;
@@ -67,7 +72,7 @@
 .iy-menu a:hover { background: var(--line-2); color: var(--ink); }
 .iy-menu a.etkin { background: var(--marka); color: #fff; }
 
-.iy-govde { max-width: 1080px; margin: 0 auto; padding: 28px 20px 72px; }
+.iy-govde { max-width: 1240px; margin: 0 auto; padding: 32px 24px 72px; }
 .iy-dar { max-width: 620px; }
 
 h1.iy-baslik { font-size: 22px; margin: 0 0 4px; letter-spacing: -.015em; }
@@ -76,7 +81,7 @@ p.iy-alt { color: var(--muted); margin: 0 0 24px; font-size: 14.5px; }
 /* ---------- kart ---------- */
 .iy-kart {
   background: var(--kart); border: 1px solid var(--line);
-  border-radius: 11px; padding: 20px;
+  border-radius: 14px; padding: 22px; box-shadow: 0 8px 24px rgba(6, 68, 156, .05);
 }
 .iy-kart + .iy-kart { margin-top: 16px; }
 .iy-kart h2 { font-size: 16px; margin: 0 0 14px; letter-spacing: -.01em; }
@@ -115,11 +120,12 @@ p.iy-alt { color: var(--muted); margin: 0 0 24px; font-size: 14.5px; }
 .iy-ipucu { font-size: 12.5px; color: var(--muted); margin-top: 5px; }
 
 .iy-btn {
-  padding: 10px 16px; border: 0; border-radius: 8px; background: var(--marka);
+  padding: 10px 16px; border: 0; border-radius: 9px;
+  background: linear-gradient(110deg, var(--marka), #0868d4);
   color: #fff; font-size: 14.5px; font-weight: 600; cursor: pointer;
   font-family: inherit;
 }
-.iy-btn:hover:not(:disabled) { background: var(--marka-koyu); }
+.iy-btn:hover:not(:disabled) { background: var(--marka-koyu); filter: brightness(.96); }
 .iy-btn:disabled { opacity: .5; cursor: not-allowed; }
 .iy-btn.tam { width: 100%; }
 .iy-btn.sade {
@@ -180,7 +186,27 @@ p.iy-alt { color: var(--muted); margin: 0 0 24px; font-size: 14.5px; }
   .iy-menu { margin-left: 0; width: 100%; }
   /* Sabit arka plan bazı telefonlarda kaydırmayı takılmalı yapıyor. */
   .iy { background-attachment: scroll; }
+  .iy-marka img { height: 38px; }
+  .iy-govde { padding-left: 16px; padding-right: 16px; }
 }
+
+/* ---------- giriş ekranları: ana İyi Yatırım sitesiyle aynı sade kimlik ---------- */
+.iy-giris {
+  min-height: 100vh; display: grid; place-items: center; padding: 32px 20px;
+  background:
+    radial-gradient(circle at 10% 10%, rgba(0, 180, 95, .14), transparent 34%),
+    radial-gradient(circle at 92% 90%, rgba(12, 100, 207, .18), transparent 36%),
+    #f7faf9;
+}
+.iy-giris-kart {
+  width: min(100%, 440px); background: rgba(255,255,255,.96); border: 1px solid #dce8e4;
+  border-radius: 18px; padding: 34px; box-shadow: 0 22px 60px rgba(6, 68, 156, .14);
+}
+.iy-giris-logo { display: block; width: auto; height: 56px; max-width: 100%; object-fit: contain; margin-bottom: 25px; }
+.iy-giris-etiket { margin: 0 0 8px; color: var(--marka); letter-spacing: .11em; font-size: 11px; font-weight: 800; }
+.iy-giris-kart h1 { font-size: 28px; line-height: 1.2; letter-spacing: -.025em; margin: 0; color: #063e79; }
+.iy-giris-kart > p:not(.iy-giris-etiket) { color: var(--muted); margin: 9px 0 25px; }
+.iy-giris-kart .iy-btn { width: 100%; margin-top: 4px; }
 
 /* ---------------- kayıt sonucu penceresi ---------------- */
 

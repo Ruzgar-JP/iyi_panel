@@ -1,13 +1,13 @@
 import { NextResponse } from "next/server";
 
-import { yoneticiBakiyeGetir } from "@/lib/scaletrade";
+import { girisYap, grupParaBirimleri, hesaplariGetir, yoneticiBakiyeGetir } from "@/lib/scaletrade";
 import {
   istemciIp,
   musteriOturumAc,
   suresiDolanlariSil,
   type HesapGorunumu,
 } from "@/lib/oturum";
-import { girisDogrula, musteriHesaplari } from "@/lib/musteri";
+import { girisDogrula, hesapBagla, musteriHesaplari } from "@/lib/musteri";
 import { sql } from "@/lib/db";
 
 export const runtime = "nodejs";
@@ -79,8 +79,38 @@ export async function POST(req: Request) {
 
   const musteri = sonuc.musteri;
 
+  /*
+   * Eski kayıt akışında platform hesabı başarıyla açılıp yerel
+   * `musteri_hesaplari` bağlantısı yazılmadan kalmış olabilir. Bu durumda
+   * müşteri kendi panel şifresiyle zaten doğrulandığı için, yalnızca ona ait
+   * saklı platform kimliğiyle listeyi okuyup eksik bağlantıları tamamlarız.
+   * Platform erişilemezse yerel giriş çalışmaya devam eder.
+   */
+  let hesaplar = await musteriHesaplari(musteri.id);
+  if (hesaplar.length === 0 && musteri.st_sifre) {
+    try {
+      const platformOturumu = await girisYap(musteri.eposta, musteri.st_sifre);
+      if (!platformOturumu.__token) throw new Error("platform token yok");
+
+      const [platformHesaplari, paraBirimleri] = await Promise.all([
+        hesaplariGetir(platformOturumu.__token),
+        grupParaBirimleri(platformOturumu.__token),
+      ]);
+      await Promise.all(
+        platformHesaplari.map((h) =>
+          hesapBagla(musteri.id, h.login, h.group, paraBirimleri[h.group] ?? null),
+        ),
+      );
+      hesaplar = await musteriHesaplari(musteri.id);
+    } catch (e) {
+      // Giriş bilgisi veya token loglanmaz; bir sonraki girişte tekrar denenir.
+      console.warn("[panel/giris] platform hesap eşitleme başarısız", {
+        hata: e instanceof Error ? e.name : typeof e,
+      });
+    }
+  }
+
   /* Bakiye girişte BİR KEZ alınır; yönetici token'ıyla okunur. */
-  const hesaplar = await musteriHesaplari(musteri.id);
   const gorunumler: HesapGorunumu[] = await Promise.all(
     hesaplar.map(async (h) => {
       let bakiye = null;
