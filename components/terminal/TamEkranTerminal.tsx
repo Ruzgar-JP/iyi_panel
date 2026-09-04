@@ -19,9 +19,20 @@ export default function TamEkranTerminal({ terminalUrl }: { terminalUrl: string 
       const iframe = frame.current;
       if (!host || !iframe) return;
 
-      const width = Math.round(host.clientWidth);
-      const height = Math.round(host.clientHeight);
+      // iOS klavye açıldığında layout viewport aynı kalabilir; oysa
+      // visualViewport gerçek, kullanıcının gördüğü alanı verir. Terminal
+      // çerçevesini buna göre küçültmezsek alt işlem tuşları klavyenin altında
+      // kalır. offset değerleri Safari'nin görünür alanı kaydırdığı durumda
+      // çerçevenin de aynı yerde kalmasını sağlar.
+      const width = Math.round(window.visualViewport?.width ?? host.clientWidth);
+      const height = Math.round(window.visualViewport?.height ?? host.clientHeight);
+      const top = Math.round(window.visualViewport?.offsetTop ?? 0);
+      const left = Math.round(window.visualViewport?.offsetLeft ?? 0);
       if (width > 0 && height > 0) {
+        host.style.width = `${width}px`;
+        host.style.height = `${height}px`;
+        host.style.top = `${top}px`;
+        host.style.left = `${left}px`;
         iframe.style.width = `${width}px`;
         iframe.style.height = `${height}px`;
       }
@@ -31,11 +42,13 @@ export default function TamEkranTerminal({ terminalUrl }: { terminalUrl: string 
     const observer = new ResizeObserver(syncFrameSize);
     if (container.current) observer.observe(container.current);
     window.visualViewport?.addEventListener("resize", syncFrameSize);
+    window.visualViewport?.addEventListener("scroll", syncFrameSize);
     window.addEventListener("orientationchange", syncFrameSize);
 
     return () => {
       observer.disconnect();
       window.visualViewport?.removeEventListener("resize", syncFrameSize);
+      window.visualViewport?.removeEventListener("scroll", syncFrameSize);
       window.removeEventListener("orientationchange", syncFrameSize);
     };
   }, []);

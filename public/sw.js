@@ -1,4 +1,4 @@
-const VERSION = "iyi-pwa-v2.8";
+const VERSION = "iyi-pwa-v2.8.1";
 const CACHE = `${VERSION}-static`;
 
 self.addEventListener("install", () => self.skipWaiting());

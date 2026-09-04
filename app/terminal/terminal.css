@@ -1,5 +1,5 @@
 html, body { height: 100%; overscroll-behavior: none; }
-.tm { position: fixed; inset: 0; box-sizing: border-box; background: #0b1220; overflow: hidden; padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left); }
+.tm { position: fixed; top: 0; left: 0; width: 100vw; height: 100dvh; background: #0b1220; overflow: hidden; }
 .tm iframe { display: block; border: 0; background: #fff; }
 .tm-bekle { position: absolute; inset: 0; z-index: 1; display: grid; place-content: center; gap: 14px; padding: 24px; text-align: center; color: #dce4f0; font: 15px/1.5 system-ui, sans-serif; }
 .tm-bekle img { margin: auto; border-radius: 14px; background: #fff; }
