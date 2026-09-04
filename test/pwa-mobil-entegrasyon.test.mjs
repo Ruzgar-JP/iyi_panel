@@ -25,13 +25,15 @@ assert.match(install, /beforeinstallprompt/);
 assert.match(install, /serviceWorker\.register\('\/sw\.js'\)/);
 
 const worker = read("public/sw.js");
-assert.match(worker, /const VERSION = "iyi-pwa-v2\.8\.2"/);
+assert.match(worker, /const VERSION = "iyi-pwa-v2\.8\.3"/);
 assert.match(worker, /url\.pathname\.startsWith\("\/api\/"\)/);
 assert.match(worker, /istek\.method !== "GET"/);
 assert.match(worker, /url\.origin !== self\.location\.origin/);
 
 const terminal = read("components/terminal/TamEkranTerminal.tsx");
 assert.doesNotMatch(terminal, /visualViewport|ResizeObserver|style\.top|style\.left/);
+assert.match(terminal, /iPhone\|iPad\|iPod/);
+assert.match(terminal, /window\.location\.replace\(terminalUrl\)/);
 
 const terminalCss = read("app/terminal/terminal.css");
 assert.match(terminalCss, /\.tm \{ position: fixed; inset: 0;/);
