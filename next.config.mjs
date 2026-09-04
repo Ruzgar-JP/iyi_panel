@@ -1,6 +1,13 @@
 /** @type {import('next').NextConfig} */
 
 const uretim = process.env.NODE_ENV === "production";
+const terminalKaynagi = (() => {
+  try {
+    return new URL(process.env.NEXT_PUBLIC_TERMINAL_URL || "https://client.iyiyatirim.org").origin;
+  } catch {
+    return "https://client.iyiyatirim.org";
+  }
+})();
 
 /**
  * İçerik Güvenlik Politikası (CSP).
@@ -24,13 +31,15 @@ const csp = [
   "img-src 'self' data: blob:",
   "font-src 'self' data:",
   `connect-src 'self' https://challenges.cloudflare.com${uretim ? "" : " ws: wss:"}`,
-  "frame-src https://challenges.cloudflare.com",
+  `frame-src https://challenges.cloudflare.com ${terminalKaynagi}`,
   // Panelin başka bir sitenin iframe'ine konmasını engeller (tıklama hırsızlığı)
   "frame-ancestors 'none'",
   "base-uri 'self'",
   // Form verisi yalnızca kendi sunucumuza gidebilir
   "form-action 'self'",
   "object-src 'none'",
+  "worker-src 'self'",
+  "manifest-src 'self'",
   ...(uretim ? ["upgrade-insecure-requests"] : []),
 ].join("; ");
 

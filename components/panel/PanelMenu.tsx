@@ -8,6 +8,7 @@ const BAGLANTILAR = [
   { yol: "/panel", etiket: "Özet" },
   { yol: "/panel/yatirim", etiket: "Para Yatır" },
   { yol: "/panel/cekim", etiket: "Para Çek" },
+  { yol: "/uygulama", etiket: "Uygulamayı İndir" },
   { yol: "/panel/taleplerim", etiket: "Taleplerim" },
   { yol: "/panel/kyc", etiket: "Belgelerim" },
   { yol: "/panel/sifre", etiket: "Şifre" },

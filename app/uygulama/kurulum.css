@@ -1,0 +1,4 @@
+.ku { min-height: 100dvh; display: grid; place-items: center; padding: calc(24px + env(safe-area-inset-top)) 20px; background: #0b1220; color: #e7eaf0; font: 15px/1.55 system-ui, sans-serif; }
+.ku * { box-sizing: border-box; }
+.ku-kart { width: min(100%, 400px); padding: 30px 26px; border: 1px solid rgba(255,255,255,.12); border-radius: 18px; background: rgba(255,255,255,.05); text-align: center; }
+.ku-ikon { border-radius: 18px; background: #fff; }.ku-kart h1 { font-size: 21px; }.ku-kart p, .ku-kart ol { text-align: left; color: #b8c3d4; }.ku-btn { display: block; width: 100%; margin-top: 12px; padding: 14px; border: 0; border-radius: 10px; background: #1a56db; color: #fff; font: inherit; font-weight: 700; text-align: center; text-decoration: none; cursor: pointer; }.ku-btn.ikincil { background: transparent; border: 1px solid #40506a; }.ku-not { font-size: 13px; }
