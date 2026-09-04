@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 
 export default function TamEkranTerminal({ terminalUrl }: { terminalUrl: string }) {
+  const container = useRef<HTMLElement>(null);
   const frame = useRef<HTMLIFrameElement>(null);
   const [loaded, setLoaded] = useState(false);
   const [delayed, setDelayed] = useState(false);
@@ -12,6 +13,33 @@ export default function TamEkranTerminal({ terminalUrl }: { terminalUrl: string 
     return () => window.clearTimeout(timer);
   }, []);
 
+  useEffect(() => {
+    const syncFrameSize = () => {
+      const host = container.current;
+      const iframe = frame.current;
+      if (!host || !iframe) return;
+
+      const width = Math.round(host.clientWidth);
+      const height = Math.round(host.clientHeight);
+      if (width > 0 && height > 0) {
+        iframe.style.width = `${width}px`;
+        iframe.style.height = `${height}px`;
+      }
+    };
+
+    syncFrameSize();
+    const observer = new ResizeObserver(syncFrameSize);
+    if (container.current) observer.observe(container.current);
+    window.visualViewport?.addEventListener("resize", syncFrameSize);
+    window.addEventListener("orientationchange", syncFrameSize);
+
+    return () => {
+      observer.disconnect();
+      window.visualViewport?.removeEventListener("resize", syncFrameSize);
+      window.removeEventListener("orientationchange", syncFrameSize);
+    };
+  }, []);
+
   function retry() {
     setLoaded(false);
     setDelayed(false);
@@ -19,7 +47,7 @@ export default function TamEkranTerminal({ terminalUrl }: { terminalUrl: string 
   }
 
   return (
-    <main className="tm">
+    <main className="tm" ref={container}>
       {!loaded && <div className="tm-bekle">
         <img src="/ikon-192.png" alt="" width={56} height={56} />
         <p>İşlem terminali açılıyor…</p>
