@@ -3,12 +3,6 @@
 import { useEffect, useState } from "react";
 
 type Platform = "android" | "ios" | "desktop";
-type InstallPrompt = Event & { prompt: () => Promise<void>; userChoice: Promise<{ outcome: "accepted" | "dismissed" }> };
-
-declare global {
-  interface Window { __iyKurulum: InstallPrompt | null }
-}
-
 function platformBelirle(): Platform {
   const agent = navigator.userAgent;
   if (/iPhone|iPad|iPod/.test(agent) || (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1)) return "ios";

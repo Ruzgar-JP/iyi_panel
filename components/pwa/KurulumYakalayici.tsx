@@ -5,13 +5,16 @@ export default function KurulumYakalayici() {
   const production = process.env.NODE_ENV === "production";
   const script = `
     window.__iyKurulum = null;
+    window.__iyKurulumHazir = false;
     window.addEventListener('beforeinstallprompt', function (event) {
       event.preventDefault();
       window.__iyKurulum = event;
+      window.__iyKurulumHazir = true;
       window.dispatchEvent(new Event('iy-kurulum-hazir'));
     });
     window.addEventListener('appinstalled', function () {
       window.__iyKurulum = null;
+      window.__iyKurulumHazir = false;
       window.dispatchEvent(new Event('iy-kuruldu'));
     });
     ${production ? "if ('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js').catch(console.warn);" : ""}
