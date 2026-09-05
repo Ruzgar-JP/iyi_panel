@@ -12,9 +12,11 @@ type TelegramGuncellemesi = {
   };
 };
 
-function siteAdresi(): string | null {
-  const ham = process.env.NEXT_PUBLIC_SITE_URL?.trim();
-  if (!ham) return null;
+function siteAdresi(istekUrl: string): string | null {
+  // Vercel'de bu değer atlanmışsa webhook'un ulaştığı HTTPS alan adını
+  // kullanırız. Telegram'ın gizli webhook başlığı doğrulanmadan bu değere
+  // hiçbir işlem yapılmaz.
+  const ham = process.env.NEXT_PUBLIC_SITE_URL?.trim() || istekUrl;
 
   try {
     const url = new URL(ham);
@@ -42,7 +44,7 @@ export async function POST(istek: Request) {
 
   const sohbetId = guncelleme.message?.chat?.id;
   const metin = guncelleme.message?.text?.trim();
-  const site = siteAdresi();
+  const site = siteAdresi(istek.url);
 
   if (sohbetId && (metin === "/start" || metin === "/terminal") && site) {
     await telegramGonder("sendMessage", {
