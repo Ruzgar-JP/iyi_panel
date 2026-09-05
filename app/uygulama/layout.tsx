@@ -4,8 +4,8 @@ import "./kurulum.css";
 export const metadata: Metadata = {
   // Kurulum penceresinde ve ana ekran simgesinin altında bu ad görünür —
   // "Uygulamayı Yükle | ..." gibi ekler istenmiyor, sadece marka adı.
-  title: "Novatrix Markets",
-  description: "Novatrix Markets işlem terminalini telefonunuzun ana ekranına ekleyin.",
+  title: "İyi Yatırım",
+  description: "İyi Yatırım işlem terminalini telefonunuzun ana ekranına ekleyin.",
   robots: { index: false, follow: false },
 };
 

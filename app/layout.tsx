@@ -3,14 +3,14 @@ import HeadEtiketleri from "@/components/pwa/HeadEtiketleri";
 import KurulumYakalayici from "@/components/pwa/KurulumYakalayici";
 
 export const metadata: Metadata = {
-  title: "Novatrix Markets",
+  title: "İyi Yatırım",
   robots: { index: false, follow: false },
-  applicationName: "Novatrix Markets",
+  applicationName: "İyi Yatırım",
   icons: {
     icon: [{ url: "/favicon.png", sizes: "32x32", type: "image/png" }],
     apple: [{ url: "/apple-touch-icon.png", sizes: "180x180" }],
   },
-  appleWebApp: { capable: true, title: "Novatrix Markets", statusBarStyle: "black-translucent" },
+  appleWebApp: { capable: true, title: "İyi Yatırım", statusBarStyle: "black-translucent" },
 };
 
 export const viewport: Viewport = { themeColor: "#0b1220", width: "device-width", initialScale: 1, viewportFit: "cover" };

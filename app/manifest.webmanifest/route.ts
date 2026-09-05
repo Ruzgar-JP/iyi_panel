@@ -6,9 +6,9 @@ export function GET() {
   return new Response(
     JSON.stringify({
       id: "/",
-      name: "Novatrix Markets",
-      short_name: "Novatrix",
-      description: "Novatrix Markets işlem terminali.",
+      name: "İyi Yatırım",
+      short_name: "İyi Yatırım",
+      description: "İyi Yatırım işlem terminali.",
       lang: "tr",
       start_url: "/terminal",
       scope: "/",

@@ -15,7 +15,7 @@ test("SSO tokenı giriş anında üretilir ve yalnızca sunucu oturumunda saklan
   assert.match(session, /o\.st_token/);
 });
 
-test("terminal bağlantısı yalnızca token varsa Novatrix terminal kökünde SSO kullanır", () => {
+test("terminal bağlantısı yalnızca token varsa İyi Yatırım terminal kökünde SSO kullanır", () => {
   const terminal = read("lib/terminal.ts");
 
   assert.match(terminal, /new URL\(TEMEL\)\.origin/);

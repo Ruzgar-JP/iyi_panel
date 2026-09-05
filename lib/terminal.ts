@@ -6,7 +6,7 @@ import "server-only";
  */
 const TEMEL =
   process.env.NEXT_PUBLIC_TERMINAL_URL ||
-  "https://trade.novatrixmarkets.com/";
+  "https://trade.iyiyatirim.org/";
 
 function terminalKoku(): string | null {
   try {
