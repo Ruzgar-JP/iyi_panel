@@ -5,6 +5,7 @@
   "scripts": {
     "kur": "node scripts/kur.mjs",
     "goc": "node scripts/goc.mjs",
+    "telegram": "node scripts/telegram.mjs",
     "dev": "next dev -p 3100",
     "build": "next build",
     "start": "next start -p 3100",

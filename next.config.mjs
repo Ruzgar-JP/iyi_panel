@@ -43,6 +43,13 @@ const csp = [
   ...(uretim ? ["upgrade-insecure-requests"] : []),
 ].join("; ");
 
+// Telegram Mini App, kendi güvenilir web görünümünde /telegram sayfasını
+// çerçeveler. Panelin geri kalanı tıklama hırsızlığına karşı kapalı kalır.
+const telegramCsp = csp.replace(
+  "frame-ancestors 'none'",
+  "frame-ancestors 'self' https://web.telegram.org https://*.telegram.org",
+);
+
 const guvenlikBasliklari = [
   { key: "Content-Security-Policy", value: csp },
   { key: "X-Content-Type-Options", value: "nosniff" },
@@ -77,6 +84,14 @@ const nextConfig = {
       {
         source: "/:yol*",
         headers: guvenlikBasliklari,
+      },
+      {
+        // Bu istisna yalnızca Mini App başlangıç sayfası içindir.
+        // CSP, modern tarayıcılarda X-Frame-Options'tan önceliklidir.
+        source: "/telegram",
+        headers: [
+          { key: "Content-Security-Policy", value: telegramCsp },
+        ],
       },
       {
         // Panel ve yönetim sayfaları ara belleğe ALINMAZ. Ortak bilgisayarda
