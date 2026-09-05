@@ -3,8 +3,8 @@ import "server-only";
 /** Tek yerden ayar. Değerler .env.local'den gelir. */
 
 export const ST = {
-  base: process.env.SCALETRADE_BASE_URL ?? "https://client.iyiyatirim.org",
-  brand: process.env.SCALETRADE_BRAND ?? "iyiyatirim",
+  base: process.env.SCALETRADE_BASE_URL ?? "https://client.novatrixmarkets.com",
+  brand: process.env.SCALETRADE_BRAND ?? "novatrix",
   grup: process.env.SCALETRADE_GROUP ?? "Main",
   /**
    * İşlem hesabı şifresini değiştirmek için gereken yönetici JWT'si.
@@ -58,4 +58,4 @@ export const IZINLI_DOSYA: Record<string, string> = {
 };
 
 export const DESTEK_EPOSTA =
-  process.env.NEXT_PUBLIC_DESTEK_EPOSTA ?? "destek@iyiyatirim.org";
+  process.env.NEXT_PUBLIC_DESTEK_EPOSTA ?? "support@novatrixmarkets.com";

@@ -4,23 +4,29 @@ import test from "node:test";
 import { kayitCorsBasliklari, kayitOriginineIzinVar } from "../lib/kayit-origin.ts";
 import { readFileSync } from "node:fs";
 
-test("İyi Yatırım web sitesi kayıt isteği gönderebilir", () => {
+test("Novatrix Markets web sitesi kayıt isteği gönderebilir", () => {
   assert.equal(
-    kayitOriginineIzinVar("https://www.iyiyatirim.org", "https://panel.iyiyatirim.org"),
+    kayitOriginineIzinVar(
+      "https://www.novatrixmarkets.com",
+      "https://musteripanel.novatrixmarkets.com",
+    ),
     true,
   );
 });
 
 test("panelin kendi kayıt sayfası istek gönderebilir", () => {
   assert.equal(
-    kayitOriginineIzinVar("https://panel.iyiyatirim.org", "https://panel.iyiyatirim.org"),
+    kayitOriginineIzinVar(
+      "https://musteripanel.novatrixmarkets.com",
+      "https://musteripanel.novatrixmarkets.com",
+    ),
     true,
   );
 });
 
 test("yerel web sitesi geliştirme sunucusu kayıt isteği gönderebilir", () => {
   assert.equal(
-    kayitOriginineIzinVar("http://localhost:3000", "https://musteripanel.iyiyatirim.org"),
+    kayitOriginineIzinVar("http://localhost:3000", "https://musteripanel.novatrixmarkets.com"),
     true,
   );
   assert.equal(
@@ -31,19 +37,19 @@ test("yerel web sitesi geliştirme sunucusu kayıt isteği gönderebilir", () =>
 
 test("başka bir alan adından kayıt isteği reddedilir", () => {
   assert.equal(
-    kayitOriginineIzinVar("https://saldirgan.example", "https://panel.iyiyatirim.org"),
+    kayitOriginineIzinVar("https://saldirgan.example", "https://musteripanel.novatrixmarkets.com"),
     false,
   );
 });
 
 test("Origin başlığı olmayan sunucu isteği kabul edilir", () => {
-  assert.equal(kayitOriginineIzinVar(null, "https://panel.iyiyatirim.org"), true);
+  assert.equal(kayitOriginineIzinVar(null, "https://musteripanel.novatrixmarkets.com"), true);
 });
 
 test("izinli kaynak için hata yanıtlarında da CORS başlığı vardır", () => {
   assert.equal(
-    kayitCorsBasliklari("https://www.iyiyatirim.org")["Access-Control-Allow-Origin"],
-    "https://www.iyiyatirim.org",
+    kayitCorsBasliklari("https://www.novatrixmarkets.com")["Access-Control-Allow-Origin"],
+    "https://www.novatrixmarkets.com",
   );
 });
 

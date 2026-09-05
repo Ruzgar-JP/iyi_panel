@@ -5,7 +5,7 @@ import KayitFormu from "@/components/kayit/KayitFormu";
 import "../panel.css";
 
 export const metadata: Metadata = {
-  title: "Hesap Aç | İyi Yatırım",
+  title: "Hesap Aç | Novatrix Markets",
   robots: { index: false, follow: false },
 };
 
@@ -24,7 +24,7 @@ export default function KayitSayfasi() {
         {process.env.DEMO_MOD !== "1" && (
           <div className="iy-mesaj bilgi">
             <strong>Canlı sunucu.</strong> Bu formu her gönderdiğinizde
-            client.iyiyatirim.org üzerinde <strong>gerçek</strong> bir müşteri
+            client.novatrixmarkets.com üzerinde <strong>gerçek</strong> bir müşteri
             kaydı ve işlem hesabı oluşur. Test kayıtlarını sonra BackOffice&apos;ten
             temizlemeyi unutmayın.
           </div>

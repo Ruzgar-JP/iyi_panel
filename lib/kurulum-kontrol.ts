@@ -29,7 +29,7 @@ export type Madde = {
 };
 
 /** Test kurulumundaki varsayılan yönetici — canlıda durmamalı. */
-const TEST_YONETICI = "yonetici@iyiyatirim.org";
+const TEST_YONETICI = "yonetici@novatrixmarkets.com";
 
 export async function kurulumKontrolu(): Promise<Madde[]> {
   const m: Madde[] = [];
@@ -206,7 +206,7 @@ export async function kurulumKontrolu(): Promise<Madde[]> {
       aciklama:
         "Tanımlı değil. Şifre sıfırlama bağlantısı isteğin geldiği adresten " +
         "üretilir; ters vekil (nginx) arkasında bu yanlış çıkabilir.",
-      cozum: "Aşağıdaki formda tam adresi yazın (örn. https://panel.iyiyatirim.org).",
+      cozum: "Aşağıdaki formda tam adresi yazın (örn. https://musteripanel.novatrixmarkets.com).",
     });
   } else if (!adres.startsWith("https://") && uretim) {
     m.push({

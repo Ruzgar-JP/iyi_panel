@@ -1,5 +1,5 @@
 /** Dış web sitesinin kayıt isteği göndermesine izin verilen tek kaynak. */
-export const KAYIT_WEB_ORIGIN = "https://www.iyiyatirim.org";
+export const KAYIT_WEB_ORIGIN = "https://www.novatrixmarkets.com";
 const YEREL_GELISTIRME_ORIGIN = "http://localhost:3000";
 
 function izinliOriginMi(origin: string | null): boolean {

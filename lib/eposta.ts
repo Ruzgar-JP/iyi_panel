@@ -141,7 +141,7 @@ export async function smtpDene(kime: string): Promise<DenemeSonucu> {
     await t.sendMail({
       from: d.ayar.gonderen,
       to: kime,
-      subject: "İyi Yatırım — test e-postası",
+      subject: "Novatrix Markets — test e-postası",
       text:
         "Bu bir test e-postasıdır.\n\n" +
         "Bunu okuyabiliyorsanız panelin e-posta ayarları doğru çalışıyor; " +
@@ -195,7 +195,7 @@ function hataMesaji(e: unknown): string {
 
 /* ------------------------------------------------------------ şablon */
 
-const MARKA = "İyi Yatırım";
+const MARKA = "Novatrix Markets";
 
 function kabuk(baslik: string, govde: string): string {
   return `<!doctype html>

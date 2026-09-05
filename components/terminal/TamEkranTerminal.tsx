@@ -52,7 +52,7 @@ export default function TamEkranTerminal({ terminalUrl }: { terminalUrl: string 
           <a href={terminalUrl}>Tarayıcıda aç</a>
         </div>}
       </div>}
-      <iframe ref={frame} src={terminalUrl} title="İyi Yatırım işlem terminali" onLoad={() => setLoaded(true)} allow="clipboard-write; fullscreen" />
+      <iframe ref={frame} src={terminalUrl} title="Novatrix Markets işlem terminali" onLoad={() => setLoaded(true)} allow="clipboard-write; fullscreen" />
     </main>
   );
 }

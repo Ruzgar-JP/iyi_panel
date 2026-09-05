@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 
-import { girisYap, grupParaBirimleri, hesaplariGetir, yoneticiBakiyeGetir } from "@/lib/scaletrade";
+import { girisYap, grupParaBirimleri, hesaplariGetir, islemGirisYap, yoneticiBakiyeGetir } from "@/lib/scaletrade";
 import {
   istemciIp,
   musteriOturumAc,
@@ -132,8 +132,13 @@ export async function POST(req: Request) {
     }),
   );
 
+  // Düz şifre yalnızca bu anda elde edilir. SSO üretilemezse panel girişi
+  // yine tamamlanır ve terminal standart giriş sayfasını gösterir.
+  const ilkHesap = hesaplar[0];
+  const stToken = ilkHesap ? await islemGirisYap(ilkHesap.login, sifre) : null;
+
   await suresiDolanlariSil();
-  await musteriOturumAc(musteri, gorunumler, ip);
+  await musteriOturumAc(musteri, gorunumler, ip, stToken);
 
   await sql`
     INSERT INTO islem_kayitlari (customer_id, eylem, detay, ip)

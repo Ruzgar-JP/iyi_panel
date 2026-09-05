@@ -14,9 +14,11 @@ import { useState } from "react";
 export default function TerminalCerceve({
   terminalUrl,
   hesaplar,
+  otomatikGiris = false,
 }: {
   terminalUrl: string;
   hesaplar: { login: number; paraBirimi: string | null }[];
+  otomatikGiris?: boolean;
 }) {
   const [acik, setAcik] = useState(false);
   const [kopyalanan, setKopyalanan] = useState<number | null>(null);
@@ -35,12 +37,16 @@ export default function TerminalCerceve({
     <>
       <h1 className="iy-baslik">İşlem Terminali</h1>
       <p className="iy-alt">
-        Alım satım ekranı. Terminale <strong>hesap numaranızla</strong>{" "}
-        girersiniz — e-posta adresinizle değil. Şifreniz panele girdiğiniz
-        şifreyle aynıdır.
+        {otomatikGiris ? (
+          <>Alım satım ekranı hesabınızla doğrudan açılır; yeniden giriş yapmanız gerekmez.</>
+        ) : (
+          <>Alım satım ekranı. Terminale <strong>hesap numaranızla</strong>{" "}
+          girersiniz — e-posta adresinizle değil. Şifreniz panele girdiğiniz
+          şifreyle aynıdır.</>
+        )}
       </p>
 
-      {hesaplar.length > 0 && (
+      {!otomatikGiris && hesaplar.length > 0 && (
         <div className="iy-kart">
           <h2>Giriş bilgileriniz</h2>
           {hesaplar.map((h) => (

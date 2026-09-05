@@ -27,7 +27,7 @@ export type SmtpAyari = {
   sifre: string;
   gonderen: string;
   tls: TlsKipi;
-  /** E-postalardaki bağlantıların alan adı, örn. https://panel.iyiyatirim.org */
+  /** E-postalardaki bağlantıların alan adı, örn. https://musteripanel.novatrixmarkets.com */
   siteAdresi: string;
 };
 
@@ -42,7 +42,7 @@ type KayitliSmtp = {
   siteAdresi?: string;
 };
 
-export const VARSAYILAN_GONDEREN = "İyi Yatırım <destek@iyiyatirim.org>";
+export const VARSAYILAN_GONDEREN = "Novatrix Markets <support@novatrixmarkets.com>";
 
 /* ------------------------------------------------------------ okuma/yazma */
 

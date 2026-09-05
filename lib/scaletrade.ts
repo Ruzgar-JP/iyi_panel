@@ -28,6 +28,7 @@ export type Adim =
   | "gruplar"
   | "hesap_ac"
   | "giris"
+  | "islem_giris"
   | "hesaplar"
   | "bakiye"
   | "profil"
@@ -204,6 +205,25 @@ export function girisYap(eposta: string, sifre: string) {
     yontem: "POST",
     govde: { email: eposta, password: sifre },
   });
+}
+
+/**
+ * İşlem hesabı oturumu açar ve terminal SSO'sunun kabul ettiği tokenı döner.
+ * Başarısızlık panel girişini engellemez; kullanıcı normal terminal girişine
+ * yönlendirilir.
+ */
+export async function islemGirisYap(login: number, sifre: string): Promise<string | null> {
+  if (DEMO) return null;
+
+  try {
+    const yanit = await istek<{ __token?: string }>("islem_giris", "/sign/in", {
+      yontem: "POST",
+      govde: { login, password: sifre },
+    });
+    return yanit.__token ?? null;
+  } catch {
+    return null;
+  }
 }
 
 /**

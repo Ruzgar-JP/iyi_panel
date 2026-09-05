@@ -41,12 +41,15 @@ export type MusteriOturumu = {
   adSoyad: string | null;
   hesaplar: HesapGorunumu[];
   bakiyeZamani: Date | null;
+  /** Terminal için işlem hesabı oturumu; tarayıcıya doğrudan verilmez. */
+  stToken: string | null;
 };
 
 export async function musteriOturumAc(
   m: Musteri,
   hesaplar: HesapGorunumu[],
   ip: string | null,
+  stToken?: string | null,
 ): Promise<void> {
   const jeton = jetonUret();
   const bitis = new Date(Date.now() + OTURUM.musteriSaat * 3600_000);
@@ -57,7 +60,7 @@ export async function musteriOturumAc(
       (cerez_hash, musteri_id, customer_id, eposta, ad_soyad, st_token,
        hesaplar, bakiye_zamani, ip, bitis)
     VALUES (${jetonOzeti(jeton)}, ${m.id}, ${m.st_customer_id ?? 0}, ${m.eposta},
-            ${adSoyad}, NULL,
+            ${adSoyad}, ${stToken ?? null},
             ${sql.json(hesaplar)}, now(), ${ip}, ${bitis})
   `;
 
@@ -77,9 +80,11 @@ export async function musteriOturumu(): Promise<MusteriOturumu | null> {
       ad_soyad: string | null;
       hesaplar: unknown;
       bakiye_zamani: Date | null;
+      st_token: string | null;
     }[]
   >`
-    SELECT o.id, o.musteri_id, o.eposta, o.ad_soyad, o.hesaplar, o.bakiye_zamani
+    SELECT o.id, o.musteri_id, o.eposta, o.ad_soyad, o.hesaplar, o.bakiye_zamani,
+           o.st_token
       FROM musteri_oturumlari o
       JOIN musteriler m ON m.id = o.musteri_id
      WHERE o.cerez_hash = ${jetonOzeti(jeton)}
@@ -100,6 +105,7 @@ export async function musteriOturumu(): Promise<MusteriOturumu | null> {
     adSoyad: s.ad_soyad,
     hesaplar: hesapGorunumleriniDiziyeCevir(s.hesaplar),
     bakiyeZamani: s.bakiye_zamani,
+    stToken: s.st_token,
   };
 }
 

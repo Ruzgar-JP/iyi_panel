@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import "../panel.css";
 
 export const metadata: Metadata = {
-  title: "Müşteri Paneli | İyi Yatırım",
+  title: "Müşteri Paneli | Novatrix Markets",
   robots: { index: false, follow: false },
 };
 
