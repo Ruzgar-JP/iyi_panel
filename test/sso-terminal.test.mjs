@@ -22,3 +22,13 @@ test("terminal bağlantısı yalnızca token varsa İyi Yatırım terminal kök�
   assert.match(terminal, /\/en\/\?token=\$\{encodeURIComponent\(stToken\)\}/);
   assert.match(terminal, /if \(!stToken\) return TEMEL/);
 });
+
+test("terminal varsayılanı İyi Yatırım'ın canlı giriş adresidir", () => {
+  const terminal = read("lib/terminal.ts");
+  const kayitSonucu = read("components/kayit/KayitSonucu.tsx");
+
+  assert.match(terminal, /"https:\/\/client\.iyiyatirim\.org\/en\/sign\/in"/);
+  assert.match(kayitSonucu, /"https:\/\/client\.iyiyatirim\.org\/en\/sign\/in"/);
+  assert.doesNotMatch(terminal, /trade\.iyiyatirim\.org/);
+  assert.doesNotMatch(kayitSonucu, /trade\.iyiyatirim\.org/);
+});

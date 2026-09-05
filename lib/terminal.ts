@@ -6,7 +6,7 @@ import "server-only";
  */
 const TEMEL =
   process.env.NEXT_PUBLIC_TERMINAL_URL ||
-  "https://trade.iyiyatirim.org/";
+  "https://client.iyiyatirim.org/en/sign/in";
 
 function terminalKoku(): string | null {
   try {

@@ -13,7 +13,7 @@ import { useEffect, useRef, useState } from "react";
  * varsayılana düşsün (?? yalnızca null/undefined yakalar).
  */
 const TERMINAL_URL =
-  process.env.NEXT_PUBLIC_TERMINAL_URL || "https://trade.iyiyatirim.org/";
+  process.env.NEXT_PUBLIC_TERMINAL_URL || "https://client.iyiyatirim.org/en/sign/in";
 
 export type AcilanHesap = {
   login: number;
