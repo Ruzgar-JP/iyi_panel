@@ -33,7 +33,7 @@ export default function TelegramSayfasi() {
         </h1>
 
         <p className="iy-telegram-description">
-          İşlemlerinizi hızlı ve güvenli bir şekilde
+          İşlemlerinizi hızlı ve  bir şekilde
           müşteri paneliniz üzerinden yönetin.
         </p>
 
